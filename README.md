@@ -5,7 +5,7 @@ of a string offset.
 
 ## Usage
 
-Create a `NewlinePositions`, then you can find line numbers for an
+Create a `LinePositions`, then you can find line numbers for an
 offset.
 
 ```rust
