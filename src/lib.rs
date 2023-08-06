@@ -74,7 +74,7 @@ impl From<&str> for NewlinePositions {
 }
 
 impl NewlinePositions {
-    fn from_offset(&self, offset: usize) -> usize {
+    pub fn from_offset(&self, offset: usize) -> LineNumber {
         let idx = self.positions.binary_search_by(|(line_start, line_end)| {
             if *line_end < offset {
                 return Ordering::Less;
@@ -86,7 +86,7 @@ impl NewlinePositions {
             Ordering::Equal
         });
 
-        idx.expect("line should be present")
+        LineNumber::from(idx.expect("line should be present") as u32)
     }
 
     /// Convert to single-line spans. If the original span crosses a
@@ -98,10 +98,10 @@ impl NewlinePositions {
         let last_idx = self.from_offset(region_end);
 
         let mut res = vec![];
-        for idx in first_idx..=last_idx {
-            let (line_start, line_end) = self.positions[idx];
+        for idx in first_idx.0..=last_idx.0 {
+            let (line_start, line_end) = self.positions[idx as usize];
             res.push(SingleLineSpan {
-                line: (idx as u32).into(),
+                line: idx.into(),
                 start_col: if line_start > region_start {
                     0
                 } else {
