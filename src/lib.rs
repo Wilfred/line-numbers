@@ -1,3 +1,21 @@
+//! Efficiently find line numbers and line spans within a string.
+//!
+//! ```rust
+//! let s = "foo\nbar\nbaz\n";
+//! let s_lines: Vec<_> = s.lines().collect();
+//!
+//! let line_positions = LinePositions::from(s);
+//!
+//! let offset = 5;
+//! let line_num = line_positions.from_offset(offset);
+//! println!(
+//!     "Offset {} is on line {}, which has the text {:?}.",
+//!     offset,
+//!     line_num.display(),
+//!     s_lines[line_num.as_usize()]
+//! );
+//! ```
+
 // The `from_offset*` methods on NewlinePositions are sensible names,
 // and the docs clippy cites:
 // https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversions-follow-as_-to_-into_-conventions-c-conv
@@ -75,6 +93,7 @@ impl From<&str> for LinePositions {
 }
 
 impl LinePositions {
+    /// Return the line number containing this `offset`.
     pub fn from_offset(&self, offset: usize) -> LineNumber {
         let idx = self.positions.binary_search_by(|(line_start, line_end)| {
             if *line_end < offset {
@@ -90,7 +109,7 @@ impl LinePositions {
         LineNumber::from(idx.expect("line should be present") as u32)
     }
 
-    /// Convert to single-line spans. If the original span crosses a
+    /// Convert this region into line spans. If the region includes a
     /// newline, the vec will contain multiple items.
     pub fn from_offsets(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
         assert!(region_start <= region_end);
