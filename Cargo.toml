@@ -1,8 +1,12 @@
 [package]
 name = "line-numbers"
+description = "Find line numbers in strings by byte offsets, quickly"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+repository = "https://github.com/wilfred/line-numbers"
+license = "MIT"
+authors = ["Wilfred Hughes <me@wilfred.me.uk>"]
+rust-version = "1.58.0"
+categories = ["text-processing"]
 
 [dependencies]
