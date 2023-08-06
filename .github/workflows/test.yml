@@ -1,0 +1,44 @@
+on: [push, pull_request]
+
+name: Continuous integration
+
+jobs:
+  test_linux:
+    name: Test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.58.0
+      - run: cargo test
+
+  test_mac:
+    name: Test macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.58.0
+      - run: cargo test
+
+  test_windows:
+    name: Test Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.58.0
+      - run: cargo test
+
+  package:
+    name: Check Linux Packaging
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.58.0
+      - run: cargo package --allow-dirty
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.58.0
+      - run: cargo fmt --all -- --check
