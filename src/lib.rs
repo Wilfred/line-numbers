@@ -26,11 +26,12 @@ impl LineNumber {
 
 impl fmt::Debug for LineNumber {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_fmt(format_args!(
+        write!(
+            f,
             "LineNumber: {} (zero-indexed: {})",
             self.display(),
             self.0
-        ))
+        )
     }
 }
 
