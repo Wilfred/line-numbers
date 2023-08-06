@@ -15,8 +15,8 @@ use std::fmt;
 pub struct LineNumber(pub u32);
 
 impl LineNumber {
-    pub fn one_indexed(self) -> u32 {
-        self.0 + 1
+    pub fn display(self) -> String {
+        format!("{}", self.0 + 1)
     }
 
     pub fn as_usize(self) -> usize {
@@ -28,7 +28,7 @@ impl fmt::Debug for LineNumber {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_fmt(format_args!(
             "LineNumber: {} (zero-indexed: {})",
-            self.one_indexed(),
+            self.display(),
             self.0
         ))
     }
