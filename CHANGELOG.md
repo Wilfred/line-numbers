@@ -1,4 +1,8 @@
-# 0.2.0 (released 5th August 2023)
+# 0.2.1 (released 6th August 2023)
+
+Fixed explanations in the README.
+
+# 0.2.0 (released 6th August 2023)
 
 Replaced `LineNumber::one_indexed()` with `LineNumber::display()`, as
 one-indexed lines are only really for human consumption.
