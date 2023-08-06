@@ -1,6 +1,8 @@
 //! Efficiently find line numbers and line spans within a string.
 //!
 //! ```rust
+//! use line_numbers::LinePositions;
+//!
 //! let s = "foo\nbar\nbaz\n";
 //! let s_lines: Vec<_> = s.lines().collect();
 //!
