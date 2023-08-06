@@ -53,13 +53,13 @@ pub struct SingleLineSpan {
 /// A struct for efficiently converting absolute string positions to
 /// line-relative positions.
 #[derive(Debug)]
-pub struct NewlinePositions {
+pub struct LinePositions {
     /// A vector of the start and end positions of all the lines in
     /// `s`. Positions include the newline character itself.
     positions: Vec<(usize, usize)>,
 }
 
-impl From<&str> for NewlinePositions {
+impl From<&str> for LinePositions {
     fn from(s: &str) -> Self {
         let mut line_start = 0;
         let mut positions = vec![];
@@ -70,11 +70,11 @@ impl From<&str> for NewlinePositions {
             line_start = line_end;
         }
 
-        NewlinePositions { positions }
+        LinePositions { positions }
     }
 }
 
-impl NewlinePositions {
+impl LinePositions {
     pub fn from_offset(&self, offset: usize) -> LineNumber {
         let idx = self.positions.binary_search_by(|(line_start, line_end)| {
             if *line_end < offset {
@@ -154,7 +154,7 @@ mod tests {
 
     #[test]
     fn from_offsets_first_line() {
-        let newline_positions: NewlinePositions = "foo".into();
+        let newline_positions: LinePositions = "foo".into();
         let line_spans = newline_positions.from_offsets(1, 3);
         assert_eq!(
             line_spans,
@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn from_offsets_first_char() {
-        let newline_positions: NewlinePositions = "foo".into();
+        let newline_positions: LinePositions = "foo".into();
         let line_spans = newline_positions.from_offsets(0, 0);
         assert_eq!(
             line_spans,
@@ -182,7 +182,7 @@ mod tests {
 
     #[test]
     fn from_offsets_split_over_multiple_lines() {
-        let newline_positions: NewlinePositions = "foo\nbar\nbaz\naaaaaaaaaaa".into();
+        let newline_positions: LinePositions = "foo\nbar\nbaz\naaaaaaaaaaa".into();
         let line_spans = newline_positions.from_offsets(5, 10);
 
         assert_eq!(
@@ -204,7 +204,7 @@ mod tests {
 
     #[test]
     fn from_offsets_relative_to() {
-        let newline_positions: NewlinePositions = "foo\nbar".into();
+        let newline_positions: LinePositions = "foo\nbar".into();
 
         let pos = SingleLineSpan {
             line: 1.into(),
