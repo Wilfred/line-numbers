@@ -74,8 +74,8 @@ pub struct SingleLineSpan {
 /// line-relative positions.
 #[derive(Debug)]
 pub struct LinePositions {
-    /// A vector of the start and end positions of all the lines in
-    /// `s`. Positions include the newline character itself.
+    /// A vector of the start and end positions of all the lines in a
+    /// string. Positions include the newline character itself.
     positions: Vec<(usize, usize)>,
 }
 
