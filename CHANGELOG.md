@@ -1,4 +1,6 @@
-# 0.2.2 (unreleased)
+# 0.2.3 (unreleased)
+
+# 0.2.2 (released 26th August 2023)
 
 Documented panic behaviour and improved panic messages.
 

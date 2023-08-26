@@ -1,7 +1,7 @@
 [package]
 name = "line-numbers"
 description = "Find line numbers in strings by byte offsets, quickly"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 repository = "https://github.com/wilfred/line-numbers"
 license = "MIT"
