@@ -96,6 +96,10 @@ impl From<&str> for LinePositions {
 
 impl LinePositions {
     /// Return the line number containing this `offset`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `offset` is out of bounds.
     pub fn from_offset(&self, offset: usize) -> LineNumber {
         let idx = self.positions.binary_search_by(|(line_start, line_end)| {
             if *line_end < offset {
@@ -113,6 +117,10 @@ impl LinePositions {
 
     /// Convert this region into line spans. If the region includes a
     /// newline, the vec will contain multiple items.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `region_start` or `region_end` are out of bounds.
     pub fn from_offsets(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
         assert!(region_start <= region_end);
 
