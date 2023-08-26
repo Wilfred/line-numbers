@@ -1,3 +1,7 @@
+# 0.2.2 (unreleased)
+
+Documented panic behaviour and improved panic messages.
+
 # 0.2.1 (released 6th August 2023)
 
 Fixed explanations in the README.
