@@ -101,6 +101,15 @@ impl LinePositions {
     ///
     /// Panics if `offset` is out of bounds.
     pub fn from_offset(&self, offset: usize) -> LineNumber {
+        if let Some((_, s_end)) = self.positions.last() {
+            assert!(
+                offset <= *s_end,
+                "Offset {} is out of bounds for a string of length {}",
+                offset,
+                s_end
+            );
+        }
+
         let idx = self.positions.binary_search_by(|(line_start, line_end)| {
             if *line_end < offset {
                 return Ordering::Less;
@@ -250,5 +259,12 @@ mod tests {
                 end_col: 3
             }]
         );
+    }
+
+    #[test]
+    #[should_panic(expected = "out of bounds for a string")]
+    fn test_from_offset_out_of_bounds() {
+        let newline_positions: LinePositions = "foo".into();
+        let _ = newline_positions.from_offset(4);
     }
 }
