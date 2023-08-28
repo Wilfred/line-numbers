@@ -1,5 +1,5 @@
 default:
-  @just --list
+    @just --list
 
 release:
     #!/bin/bash
