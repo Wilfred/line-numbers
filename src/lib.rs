@@ -191,6 +191,12 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_display_one_indexed() {
+        let ln = LineNumber(0);
+        assert_eq!(ln.display(), "1");
+    }
+
+    #[test]
     fn from_offsets_first_line() {
         let newline_positions: LinePositions = "foo".into();
         let line_spans = newline_positions.from_offsets(1, 3);
