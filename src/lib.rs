@@ -130,7 +130,7 @@ impl LinePositions {
     /// # Panics
     ///
     /// Panics if `region_start` or `region_end` are out of bounds.
-    pub fn from_offsets(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
+    pub fn from_region(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
         assert!(region_start <= region_end);
 
         let first_idx = self.from_offset(region_start);
@@ -157,7 +157,7 @@ impl LinePositions {
         res
     }
 
-    pub fn from_offsets_relative_to(
+    pub fn from_region_relative_to(
         &self,
         start: SingleLineSpan,
         region_start: usize,
@@ -166,7 +166,7 @@ impl LinePositions {
         assert!(region_start <= region_end);
 
         let mut res = vec![];
-        for pos in self.from_offsets(region_start, region_end) {
+        for pos in self.from_region(region_start, region_end) {
             if pos.line.0 == 0 {
                 res.push(SingleLineSpan {
                     line: start.line,
@@ -197,9 +197,9 @@ mod tests {
     }
 
     #[test]
-    fn from_offsets_first_line() {
+    fn from_region_first_line() {
         let newline_positions: LinePositions = "foo".into();
-        let line_spans = newline_positions.from_offsets(1, 3);
+        let line_spans = newline_positions.from_region(1, 3);
         assert_eq!(
             line_spans,
             vec![SingleLineSpan {
@@ -211,9 +211,9 @@ mod tests {
     }
 
     #[test]
-    fn from_offsets_first_char() {
+    fn from_region_first_char() {
         let newline_positions: LinePositions = "foo".into();
-        let line_spans = newline_positions.from_offsets(0, 0);
+        let line_spans = newline_positions.from_region(0, 0);
         assert_eq!(
             line_spans,
             vec![SingleLineSpan {
@@ -225,9 +225,9 @@ mod tests {
     }
 
     #[test]
-    fn from_offsets_split_over_multiple_lines() {
+    fn from_region_split_over_multiple_lines() {
         let newline_positions: LinePositions = "foo\nbar\nbaz\naaaaaaaaaaa".into();
-        let line_spans = newline_positions.from_offsets(5, 10);
+        let line_spans = newline_positions.from_region(5, 10);
 
         assert_eq!(
             line_spans,
@@ -247,7 +247,7 @@ mod tests {
     }
 
     #[test]
-    fn from_offsets_relative_to() {
+    fn from_region_relative_to() {
         let newline_positions: LinePositions = "foo\nbar".into();
 
         let pos = SingleLineSpan {
@@ -256,7 +256,7 @@ mod tests {
             end_col: 1,
         };
 
-        let line_spans = newline_positions.from_offsets_relative_to(pos, 1, 2);
+        let line_spans = newline_positions.from_region_relative_to(pos, 1, 2);
         assert_eq!(
             line_spans,
             vec![SingleLineSpan {
