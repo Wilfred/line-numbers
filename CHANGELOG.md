@@ -1,4 +1,6 @@
-# 0.3.0 (unreleased)
+# 0.3.1 (unreleased)
+
+# 0.3.0 (released 19th November 2023)
 
 Breaking change: Renamed `from_offsets` to `from_region`, and
 `from_offsets_relative_to` to `from_region_relative_to`.
