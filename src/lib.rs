@@ -181,13 +181,19 @@ impl LinePositions {
         for pos in self.from_region(region_start, region_end) {
             if pos.line.0 == 0 {
                 res.push(SingleLineSpan {
-                    line: start.line,
-                    start_col: start.start_col + pos.start_col,
-                    end_col: start.start_col + pos.end_col,
+                    line: (pos.line.0 + start.line.0).into(),
+                    // On the first line of the inner string, the
+                    // inner column offset may not match the column
+                    // offset of the enclosing string.
+                    start_col: pos.start_col + start.start_col,
+                    end_col: pos.end_col + start.start_col,
                 });
             } else {
                 res.push(SingleLineSpan {
-                    line: (start.line.0 + pos.line.0).into(),
+                    line: (pos.line.0 + start.line.0).into(),
+                    // On later lines in the inner string, since we've
+                    // seen a newline, we know the column offsets are
+                    // the same as the enclosing string.
                     start_col: pos.start_col,
                     end_col: pos.end_col,
                 });
@@ -268,14 +274,21 @@ mod tests {
             end_col: 1,
         };
 
-        let line_spans = newline_positions.from_region_relative_to(pos, 1, 2);
+        let line_spans = newline_positions.from_region_relative_to(pos, 1, 7);
         assert_eq!(
             line_spans,
-            vec![SingleLineSpan {
-                line: 100.into(),
-                start_col: 2,
-                end_col: 3
-            }]
+            vec![
+                SingleLineSpan {
+                    line: 100.into(),
+                    start_col: 2,
+                    end_col: 4
+                },
+                SingleLineSpan {
+                    line: 101.into(),
+                    start_col: 0,
+                    end_col: 3
+                }
+            ]
         );
     }
 
