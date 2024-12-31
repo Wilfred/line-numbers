@@ -137,7 +137,8 @@ impl LinePositions {
     ///
     /// # Panics
     ///
-    /// Panics if `region_start` or `region_end` are out of bounds.
+    /// Panics if `region_start` or `region_end` are out of bounds, or
+    /// if `region_start` is greater than `region_end`.
     pub fn from_region(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
         assert!(region_start <= region_end);
 
@@ -161,6 +162,12 @@ impl LinePositions {
         res
     }
 
+    /// Convert this region into line spans, relative to `start`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `region_start` or `region_end` are out of bounds, or
+    /// if `region_start` is greater than `region_end`.
     pub fn from_region_relative_to(
         &self,
         start: SingleLineSpan,
