@@ -141,11 +141,7 @@ impl LinePositions {
             let (line_start, line_end) = self.positions[idx as usize];
             res.push(SingleLineSpan {
                 line: idx.into(),
-                start_col: if line_start > region_start {
-                    0
-                } else {
-                    region_start - line_start
-                } as u32,
+                start_col: region_start.saturating_sub(line_start) as u32,
                 end_col: if region_end < line_end {
                     region_end - line_start
                 } else {
