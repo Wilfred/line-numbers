@@ -1,4 +1,6 @@
-# 0.3.1 (unreleased)
+# 0.3.2 (unreleased)
+
+# 0.3.1 (released 30th December 2024)
 
 Expanded doc comments of all public APIs.
 
