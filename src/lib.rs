@@ -74,8 +74,9 @@ pub struct SingleLineSpan {
 /// line-relative positions.
 #[derive(Debug)]
 pub struct LinePositions {
-    /// A vector of the start and end positions of all the lines in a
-    /// string. Positions include the newline character itself.
+    /// A vector of the start and end positions (in bytes) of all the
+    /// lines in a string. Positions include the newline character
+    /// itself.
     positions: Vec<(usize, usize)>,
 }
 
@@ -95,7 +96,8 @@ impl From<&str> for LinePositions {
 }
 
 impl LinePositions {
-    /// Return the line number containing this `offset`.
+    /// Return the line number containing this `offset`, measured in
+    /// bytes.
     ///
     /// # Panics
     ///
