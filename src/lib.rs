@@ -31,6 +31,11 @@ use std::fmt;
 /// other numerical data.
 ///
 /// Zero-indexed internally.
+///
+/// We use a 32-bit integer, so a file cannot have more than 4 billion
+/// lines. This keeps the size of the struct small. It's common to
+/// have a lot of `LineNumber`s when analysing large files, so the
+/// struct size is more important than handling crazy big files.
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct LineNumber(pub u32);
 
@@ -64,9 +69,10 @@ impl From<u32> for LineNumber {
 /// A range within a single line of a string.
 #[derive(Debug, PartialEq, Clone, Copy, Eq, PartialOrd, Ord, Hash)]
 pub struct SingleLineSpan {
-    /// All zero-indexed.
     pub line: LineNumber,
+    /// Start column.
     pub start_col: u32,
+    /// End column.
     pub end_col: u32,
 }
 
