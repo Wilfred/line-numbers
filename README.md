@@ -1,4 +1,4 @@
-# line-numbers <a href="https://crates.io/crates/line-numbers"><img src="https://img.shields.io/crates/v/line-numbers.svg?style=flat-square" alt="crates.io"></a> <a href="https://codecov.io/gh/Wilfred/line-numbers"><img src="https://img.shields.io/codecov/c/github/Wilfred/line-numbers?style=flat-square&token=jdOv9Fo8rG" alt="codecov.io"></a> <img alt="docs.rs" src="https://img.shields.io/docsrs/line-numbers?style=flat-square">
+# line-numbers <a href="https://crates.io/crates/line-numbers"><img src="https://img.shields.io/crates/v/line-numbers.svg?style=flat-square" alt="crates.io"></a> <a href="https://codecov.io/gh/Wilfred/line-numbers"><img src="https://img.shields.io/codecov/c/github/Wilfred/line-numbers?style=flat-square&token=jdOv9Fo8rG" alt="codecov.io"></a> <a href="https://docs.rs/line-numbers/latest/line_numbers/"><img alt="docs.rs" src="https://img.shields.io/docsrs/line-numbers?style=flat-square"></a>
 
 line-numbers is a Rust crate for efficiently finding the line number
 of a string offset.
