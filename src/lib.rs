@@ -162,7 +162,8 @@ impl LinePositions {
         res
     }
 
-    /// Convert this region into line spans, relative to `start`.
+    /// Given a region in the current LinePositions, convert it to be
+    /// relative to a `start` offset in a larger, enclosing string.
     ///
     /// # Panics
     ///
@@ -262,7 +263,7 @@ mod tests {
         let newline_positions: LinePositions = "foo\nbar".into();
 
         let pos = SingleLineSpan {
-            line: 1.into(),
+            line: 100.into(),
             start_col: 1,
             end_col: 1,
         };
@@ -271,7 +272,7 @@ mod tests {
         assert_eq!(
             line_spans,
             vec![SingleLineSpan {
-                line: 1.into(),
+                line: 100.into(),
                 start_col: 2,
                 end_col: 3
             }]
