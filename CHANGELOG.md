@@ -1,5 +1,7 @@
 # 0.3.1 (unreleased)
 
+Expanded doc comments of all public APIs.
+
 # 0.3.0 (released 19th November 2023)
 
 Breaking change: Renamed `from_offsets` to `from_region`, and
