@@ -9,11 +9,13 @@
 //! let line_positions = LinePositions::from(s);
 //!
 //! let offset = 5;
-//! let line_num = line_positions.from_offset(offset);
+//! let (line_num, column) = line_positions.from_offset(offset);
+//!
 //! println!(
-//!     "Offset {} is on line {}, which has the text {:?}.",
+//!     "Offset {} is on line {} (column {}), and the text of that line is {:?}.",
 //!     offset,
 //!     line_num.display(),
+//!     column,
 //!     s_lines[line_num.as_usize()]
 //! );
 //! ```
@@ -102,13 +104,13 @@ impl From<&str> for LinePositions {
 }
 
 impl LinePositions {
-    /// Return the line number containing this `offset`, measured in
-    /// bytes.
+    /// Return the line and column corresponding to this
+    /// `offset`. `offset` is measured in bytes.
     ///
     /// # Panics
     ///
     /// Panics if `offset` is out of bounds.
-    pub fn from_offset(&self, offset: usize) -> LineNumber {
+    pub fn from_offset(&self, offset: usize) -> (LineNumber, usize) {
         if let Some((_, s_end)) = self.positions.last() {
             assert!(
                 offset <= *s_end,
@@ -118,18 +120,24 @@ impl LinePositions {
             );
         }
 
-        let idx = self.positions.binary_search_by(|(line_start, line_end)| {
-            if *line_end < offset {
-                return Ordering::Less;
-            }
-            if *line_start > offset {
-                return Ordering::Greater;
-            }
+        let idx = self
+            .positions
+            .binary_search_by(|(line_start, line_end)| {
+                if *line_end < offset {
+                    return Ordering::Less;
+                }
+                if *line_start > offset {
+                    return Ordering::Greater;
+                }
 
-            Ordering::Equal
-        });
+                Ordering::Equal
+            })
+            .expect("line should be present");
 
-        LineNumber::from(idx.expect("line should be present") as u32)
+        let (line_start_offset, _) = self.positions.get(idx).unwrap();
+        let column = offset - line_start_offset;
+
+        (LineNumber::from(idx as u32), column)
     }
 
     /// Convert this region into line spans. If the region includes a
@@ -142,11 +150,11 @@ impl LinePositions {
     pub fn from_region(&self, region_start: usize, region_end: usize) -> Vec<SingleLineSpan> {
         assert!(region_start <= region_end);
 
-        let first_idx = self.from_offset(region_start);
-        let last_idx = self.from_offset(region_end);
+        let (first_line, _) = self.from_offset(region_start);
+        let (last_line, _) = self.from_offset(region_end);
 
         let mut res = vec![];
-        for idx in first_idx.0..=last_idx.0 {
+        for idx in first_line.0..=last_line.0 {
             let (line_start, line_end) = self.positions[idx as usize];
             res.push(SingleLineSpan {
                 line: idx.into(),
@@ -212,6 +220,16 @@ mod tests {
     fn test_display_one_indexed() {
         let ln = LineNumber(0);
         assert_eq!(ln.display(), "1");
+    }
+
+    #[test]
+    fn from_offset() {
+        let newline_positions: LinePositions = "foo\nbar".into();
+        let offset = 5;
+
+        let (line, column) = newline_positions.from_offset(offset);
+        assert_eq!(line.as_usize(), 1);
+        assert_eq!(column, 1);
     }
 
     #[test]

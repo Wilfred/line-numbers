@@ -1,4 +1,7 @@
-# 0.3.2 (unreleased)
+# 0.4.0 (unreleased)
+
+`LinePositions::from_offset` now returns both the line number and the
+column.
 
 # 0.3.1 (released 30th December 2024)
 
