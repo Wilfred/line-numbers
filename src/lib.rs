@@ -42,10 +42,17 @@ use std::fmt;
 pub struct LineNumber(pub u32);
 
 impl LineNumber {
+    /// The line number as a one-indexed number formatted a
+    /// string. This is intended to show users.
+    ///
+    /// `display` returns "1" for the first line.
     pub fn display(self) -> String {
         format!("{}", self.0 + 1)
     }
 
+    /// The line number as a zero-indexed integer.
+    ///
+    /// `as_usize` returns 0 for the first line.
     pub fn as_usize(self) -> usize {
         self.0 as usize
     }
