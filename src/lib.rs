@@ -79,9 +79,9 @@ impl From<u32> for LineNumber {
 #[derive(Debug, PartialEq, Clone, Copy, Eq, PartialOrd, Ord, Hash)]
 pub struct SingleLineSpan {
     pub line: LineNumber,
-    /// Start column.
+    /// Start column, as a byte offset from the start of the line.
     pub start_col: u32,
-    /// End column.
+    /// End column, as a byte offset from the start of the line.
     pub end_col: u32,
 }
 
@@ -150,6 +150,8 @@ impl LinePositions {
     /// Convert this region into line spans. If the region includes a
     /// newline, the vec will contain multiple items.
     ///
+    /// `region_start` and `region_end` are measured in bytes.
+    ///
     /// # Panics
     ///
     /// Panics if `region_start` or `region_end` are out of bounds, or
@@ -177,8 +179,16 @@ impl LinePositions {
         res
     }
 
-    /// Given a region in the current LinePositions, convert it to be
-    /// relative to a `start` offset in a larger, enclosing string.
+    /// Convert a region in the current `LinePositions` to a series of
+    /// single line spans in a larger enclosing string.
+    ///
+    /// `region_start` and `region_end` are measured in bytes.
+    ///
+    /// ```
+    /// let small_str_lps: LinePositions = small_str.into();
+    ///
+    /// let big_str_spans = small_str_lps.from_region_relative_to(pos_in_big_str, 0, 5);
+    /// ```
     ///
     /// # Panics
     ///
