@@ -26,6 +26,8 @@
 // don't actually have an opinion on `from_foo` names.
 #![allow(clippy::wrong_self_convention)]
 
+#![warn(missing_docs)]
+
 use std::cmp::Ordering;
 use std::fmt;
 
@@ -78,6 +80,7 @@ impl From<u32> for LineNumber {
 /// A range within a single line of a string.
 #[derive(Debug, PartialEq, Clone, Copy, Eq, PartialOrd, Ord, Hash)]
 pub struct SingleLineSpan {
+    /// The line that this span occurs on.
     pub line: LineNumber,
     /// Start column, as a byte offset from the start of the line.
     pub start_col: u32,
