@@ -227,6 +227,12 @@ impl LinePositions {
 
         res
     }
+
+    /// The vector containing the start and end positions (in bytes) of every
+    /// line.
+    pub fn positions(&self) -> &Vec<(usize, usize)> {
+        &self.positions
+    }
 }
 
 #[cfg(test)]
